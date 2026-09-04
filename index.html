@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>摸摸番茄 · 可爱番茄钟</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍅</text></svg>" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="blob blob-a"></div>
+  <div class="blob blob-b"></div>
+  <div class="blob blob-c"></div>
+
+  <main class="card">
+    <header class="top">
+      <h1>摸摸番茄</h1>
+      <p class="tagline">揪个小番茄，专心做一件事～</p>
+    </header>
+
+    <div class="mascot-wrap">
+      <div id="mascot" class="mascot" aria-hidden="true">
+        <svg viewBox="0 0 200 190">
+          <g class="leaf">
+            <path d="M100 46 C84 22, 60 20, 44 34 C58 44, 76 48, 92 46 Z" fill="#7BD88F"/>
+            <path d="M100 46 C116 22, 140 20, 156 34 C142 44, 124 48, 108 46 Z" fill="#8FE0A0"/>
+            <path d="M100 46 C100 18, 88 10, 72 12 C82 28, 92 40, 100 46 Z" fill="#9DE7AC"/>
+            <rect x="96" y="42" width="8" height="12" rx="3" fill="#F2B36B"/>
+          </g>
+          <ellipse cx="100" cy="112" rx="72" ry="68" fill="#FF6B6B"/>
+          <ellipse cx="100" cy="116" rx="60" ry="52" fill="#FF7A72"/>
+          <ellipse cx="70" cy="78" rx="16" ry="9" fill="#FFD0CC" opacity="0.9" transform="rotate(-18 70 78)"/>
+          <ellipse cx="134" cy="92" rx="14" ry="8" fill="#FFD0CC" opacity="0.8" transform="rotate(24 134 92)"/>
+
+          <g class="face face-idle">
+            <circle cx="72" cy="102" r="6.5" fill="#4A2B2B"/>
+            <circle cx="128" cy="102" r="6.5" fill="#4A2B2B"/>
+            <circle cx="74.5" cy="100" r="2" fill="#fff"/>
+            <circle cx="130.5" cy="100" r="2" fill="#fff"/>
+            <path d="M84 136 Q100 148 116 136" stroke="#4A2B2B" stroke-width="5" fill="none" stroke-linecap="round"/>
+          </g>
+
+          <g class="face face-focus">
+            <line x1="60" y1="88" x2="82" y2="98" stroke="#4A2B2B" stroke-width="6" stroke-linecap="round"/>
+            <line x1="140" y1="88" x2="118" y2="98" stroke="#4A2B2B" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="75" cy="104" r="6.5" fill="#4A2B2B"/>
+            <circle cx="125" cy="104" r="6.5" fill="#4A2B2B"/>
+            <circle cx="77.5" cy="102" r="2" fill="#fff"/>
+            <circle cx="127.5" cy="102" r="2" fill="#fff"/>
+            <ellipse cx="100" cy="134" rx="6" ry="7" fill="#4A2B2B"/>
+          </g>
+
+          <g class="face face-break">
+            <path d="M64 100 Q72 90 80 100" stroke="#4A2B2B" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <path d="M120 100 Q128 90 136 100" stroke="#4A2B2B" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <path d="M86 138 Q100 150 114 138" stroke="#4A2B2B" stroke-width="5" fill="none" stroke-linecap="round"/>
+          </g>
+
+          <g class="face face-done">
+            <path d="M64 100 Q72 90 80 100" stroke="#4A2B2B" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <path d="M120 100 Q128 90 136 100" stroke="#4A2B2B" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <path d="M80 134 Q100 156 120 134" stroke="#4A2B2B" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <circle cx="66" cy="126" r="5" fill="#FFB3A7"/>
+            <circle cx="134" cy="126" r="5" fill="#FFB3A7"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="modes" id="modes" role="tablist">
+      <button class="mode" data-mode="focus" role="tab">🍅 专注</button>
+      <button class="mode" data-mode="short" role="tab">🍵 短休</button>
+      <button class="mode" data-mode="long" role="tab">🌿 长休</button>
+    </div>
+
+    <div class="timer-wrap">
+      <svg class="ring" viewBox="0 0 280 280" aria-hidden="true">
+        <circle class="ring-track" cx="140" cy="140" r="124"/>
+        <circle id="ring-progress" class="ring-progress" cx="140" cy="140" r="124"/>
+      </svg>
+      <div class="time-box">
+        <div id="time" class="time">25:00</div>
+        <div id="state-note" class="state-note">准备好就点开始吧</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="btn-primary" class="btn btn-primary">▶ 开始专注</button>
+      <button id="btn-reset" class="btn btn-ghost">↺ 重置</button>
+    </div>
+
+    <div class="stats">
+      <div id="tomato-count" class="tomato-count">🍅 0</div>
+      <div class="dots" id="dots" aria-label="本轮进度"></div>
+      <div id="cycle-note" class="cycle-note">本组第 1 个专注</div>
+    </div>
+
+    <div class="settings">
+      <button id="btn-settings" class="btn-settings" type="button" aria-expanded="false">⚙ 时间设置</button>
+      <div class="settings-panel" id="settings-panel" hidden>
+        <div class="set-row">
+          <span class="set-label">🍅 专注</span>
+          <label class="num"><input id="set-focus" type="number" min="1" max="180" step="1" /><span>分钟</span></label>
+        </div>
+        <div class="set-row">
+          <span class="set-label">🍵 短休</span>
+          <label class="num"><input id="set-short" type="number" min="1" max="120" step="1" /><span>分钟</span></label>
+        </div>
+        <div class="set-row">
+          <span class="set-label">🌿 长休</span>
+          <label class="num"><input id="set-long" type="number" min="1" max="180" step="1" /><span>分钟</span></label>
+        </div>
+        <div class="set-row">
+          <span class="set-label">🔁 长休间隔</span>
+          <label class="num"><input id="set-cycle" type="number" min="2" max="12" step="1" /><span>轮专注</span></label>
+        </div>
+        <button id="btn-restore" class="btn btn-ghost btn-mini" type="button">恢复默认 25/5/15</button>
+      </div>
+    </div>
+
+    <div class="options">
+      <label class="opt">
+        <span>🔔 提示音</span>
+        <span class="switch"><input id="opt-sound" type="checkbox" checked /><i></i></span>
+      </label>
+      <label class="opt">
+        <span>💬 桌面通知</span>
+        <span class="switch"><input id="opt-notify" type="checkbox" /><i></i></span>
+      </label>
+    </div>
+
+    <p class="tip">按一下空格键也能开始 / 暂停哦</p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
